@@ -23,6 +23,6 @@ public class Test {
         myLinkedList.addAtIndex(3, 3);
         System.out.println(myLinkedList);
         System.out.println(myLinkedList.index(5));
-        System.out.println(myLinkedList.get(3));
+        System.out.println(myLinkedList.get(5));
     }
 }

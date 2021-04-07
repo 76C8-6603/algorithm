@@ -52,73 +52,94 @@ public class MyLinkedList<E> {
 
     public void addAtIndex(E val, int index) {
 
-        if (size == 0 && index != 0) {
-            throw new IllegalArgumentException("No such index");
-        }
         if (index > size || index < 0) {
             throw new IllegalArgumentException("No such index");
-
         }
 
         final Node<E> cur = get(index);
-
-        if (size == 0) {
-            addAtHead(val);
-        } else if (index == size) {
+        if (index == size) {
             addAtTail(val);
+        }else{
+            addBefore(val,cur);
         }
+    }
 
-        if (cur != null) {
-            final Node<E> newNode = new Node<>(cur.prev, val, cur.next);
-            final Node<E> curPrev = cur.prev;
-            cur.prev = newNode;
-            curPrev.next = newNode;
+    public void addBefore(E val, Node<E> curNode) {
+        final Node<E> pred = curNode.prev;
+        final Node<E> newNode = new Node<>(pred, val, curNode);
+        curNode.prev = newNode;
+        if (pred == null) {
+            first = newNode;
+        }else{
+            pred.next = newNode;
         }
-
+        size++;
+        modifySize++;
     }
 
     public Node<E> get(int i) {
-        if (size == 0) {
-            throw null;
-        }
+
         if (i > size - 1 || i < 0) {
-            return null;
+            throw new IndexOutOfBoundsException();
         }
-        Node<E> targetNode = null;
-        int index = 0;
-        for (Node<E> curNode = first; curNode != null; curNode = curNode.next) {
-            if (i == index) {
-                targetNode = curNode;
-                break;
-            }
-            index++;
-        }
-        return targetNode;
+
+        return node(i);
     }
 
-    public void deleteAtIndex(int i) {
-        if (size == 0) {
-            throw new IllegalArgumentException();
-        }
-        if (i < 0 || i > size - 1) {
-            throw new IllegalArgumentException();
-        }
-        int index = 0;
-        for (Node<E> curNode = first; curNode != null; curNode = curNode.next) {
-            if (i == index) {
-                curNode.prev.next = curNode.next;
-                curNode.next.prev = curNode.prev;
-                modifySize++;
-                size--;
-                break;
+    public Node<E> node(int index) {
+        if (index < (size >> 1)) {
+            Node<E> startNode = first;
+            for (int i = 0; i < index; i++) {
+                startNode = startNode.next;
             }
-            index++;
+            return startNode;
+        }else{
+            Node<E> lastNode = last;
+            for (int i = size - 1; i > index; i--) {
+                lastNode = lastNode.prev;
+            }
+            return lastNode;
         }
+
+    }
+
+    public E deleteAtIndex(int i) {
+
+        if (i > size - 1 || i < 0 ) {
+            throw new IndexOutOfBoundsException();
+        }
+        return unlink(node(i));
+    }
+
+    private E unlink(Node<E> node) {
+        final E value = node.value;
+        final Node<E> prev = node.prev;
+        final Node<E> next = node.next;
+
+        if (prev == null) {
+            first = next;
+        }else{
+            prev.next = next;
+            node.prev = null;
+        }
+
+        if (next == null) {
+            last = prev;
+        }else{
+            next.prev = prev;
+            node.next = null;
+        }
+        node.value = null;
+
+        modifySize++;
+        size--;
+
+        return value;
     }
 
     public int index(Object obj) {
         if (size == 0) {
-            throw new IndexOutOfBoundsException();
+            throw new NullPointerException();
         }
         int index = 0;
         if (obj == null) {
