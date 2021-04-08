@@ -5,7 +5,7 @@ import main.com.ming.MyLinkedList;
 /**
  * @author 78c8-6603
  */
-public class Test {
+public class LinkedListTest {
     public static void main(String[] args) {
         final MyLinkedList<Integer> myLinkedList = new MyLinkedList<>(1);
         myLinkedList.addAtHead(0);
