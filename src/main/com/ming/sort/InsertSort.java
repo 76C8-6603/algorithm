@@ -1,5 +1,8 @@
 package main.com.ming.sort;
 
+import main.com.ming.MyLinkedList;
+import main.com.ming.MySingleLinkedList;
+
 import java.util.Arrays;
 
 /**
@@ -11,15 +14,43 @@ public class InsertSort implements Sort{
     public int[] sort(int[] rawArray) {
         for (int outer = 0; outer < rawArray.length; outer++) {
             int temp = rawArray[outer];
-            int inner = outer-1;
-            while (inner > 0 && rawArray[inner] > temp) {
-                rawArray[inner + 1] = rawArray[inner];
-                rawArray[inner] = temp;
+            int inner = outer;
+            while (inner > 0 && rawArray[inner-1] > temp) {
+                rawArray[inner] = rawArray[inner-1];
                 inner--;
             }
+            rawArray[inner] = temp;
 
         }
         return rawArray;
+    }
+
+    /**
+     * 单链表插入排序
+     * @param head
+     * @return
+     */
+    public MySingleLinkedList sort(MySingleLinkedList head) {
+        MySingleLinkedList mockHead = new MySingleLinkedList(0, head);
+        MySingleLinkedList lastSorted = head;
+        for (MySingleLinkedList cur = head.next; cur != null; cur = cur.next) {
+            if (cur.value > lastSorted.value) {
+                lastSorted = cur;
+            }else{
+                MySingleLinkedList prev = mockHead;
+                while(cur.value > prev.next.value){
+                    prev = prev.next;
+                }
+                final MySingleLinkedList prevNext = prev.next;
+                final MySingleLinkedList curNext = cur.next;
+                cur.next = prevNext;
+                prev.next = cur;
+                lastSorted.next = curNext;
+                cur = lastSorted;
+            }
+        }
+        return head;
+
     }
 
     public static void main(String[] args) {
@@ -28,5 +59,12 @@ public class InsertSort implements Sort{
         final InsertSort insertSort = new InsertSort();
         final int[] sort = insertSort.sort(ints);
         System.out.println(Arrays.toString(sort));
+
+        final MySingleLinkedList mySingleLinkedList = new MySingleLinkedList(5);
+        mySingleLinkedList.next = new MySingleLinkedList(3);
+        mySingleLinkedList.next.next = new MySingleLinkedList(9);
+        mySingleLinkedList.next.next.next = new MySingleLinkedList(1);
+        mySingleLinkedList.next.next.next.next = new MySingleLinkedList(2);
+
     }
 }
