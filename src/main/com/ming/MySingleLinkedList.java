@@ -1,6 +1,7 @@
 package main.com.ming;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 /**
  * @author tianshiming
@@ -24,6 +25,10 @@ public class MySingleLinkedList {
     @Override
     public String toString() {
         final ArrayList<String> strings = new ArrayList<>();
-        for()
+        for (MySingleLinkedList current = this; current != null; current = current.next) {
+            strings.add(String.valueOf(current.value));
+        }
+        final String finalString = strings.stream().collect(Collectors.joining(","));
+        return finalString;
     }
 }

@@ -46,10 +46,10 @@ public class InsertSort implements Sort{
                 cur.next = prevNext;
                 prev.next = cur;
                 lastSorted.next = curNext;
-                cur = lastSorted;
             }
+            cur = lastSorted;
         }
-        return head;
+        return mockHead.next;
 
     }
 
@@ -65,6 +65,8 @@ public class InsertSort implements Sort{
         mySingleLinkedList.next.next = new MySingleLinkedList(9);
         mySingleLinkedList.next.next.next = new MySingleLinkedList(1);
         mySingleLinkedList.next.next.next.next = new MySingleLinkedList(2);
-
+        System.out.println(mySingleLinkedList);
+        final MySingleLinkedList linkedList = insertSort.sort(mySingleLinkedList);
+        System.out.println(linkedList);
     }
 }
