@@ -10,68 +10,70 @@ public class MergeSort implements Sort{
     public static final int THRESHOLD_INSERT_SORT = 7;
 
     @Override
-    public int[] sort(int[] rawArray) {
+    public void sort(int[] rawArray) {
+        if (rawArray.length == 0) {
+            return;
+        }
         int[] tempArray = new int[rawArray.length];
-        mergeSort(0, rawArray.length - 1, rawArray, tempArray);
-        return rawArray;
+        mergeSort(rawArray, 0, rawArray.length - 1, tempArray);
     }
 
-    private void mergeSort(int startIndex, int endIndex, int[] rawArray, int[] tempArray) {
-        if (endIndex - startIndex + 1  <= THRESHOLD_INSERT_SORT) {
-            insertSort(rawArray, startIndex, endIndex);
+    private void mergeSort(int[] rawArray, int leftIndex, int rightIndex, int[] tempArray) {
+        if (rightIndex - leftIndex + 1 <= THRESHOLD_INSERT_SORT) {
+            insertionSort(rawArray, leftIndex, rightIndex);
             return;
         }
 
-        int mid = (startIndex + endIndex) >>> 1;
+        int mid = (leftIndex + rightIndex) >>> 1;
 
-        mergeSort(startIndex, mid, rawArray, tempArray);
-        mergeSort(mid + 1, endIndex, rawArray, tempArray);
+        mergeSort(rawArray, leftIndex, mid, tempArray);
+        mergeSort(rawArray, mid + 1, rightIndex, tempArray);
 
         if (rawArray[mid] <= rawArray[mid + 1]) {
             return;
         }
-        mergeSorted(startIndex, mid, endIndex, rawArray, tempArray);
 
+        mergeSortedArray(rawArray, leftIndex, mid, rightIndex, tempArray);
     }
 
-    private void mergeSorted(int startIndex, int mid, int endIndex, int[] rawArray, int[] tempArray) {
-        System.arraycopy(rawArray, startIndex, tempArray, startIndex, endIndex - startIndex + 1);
-        int frontIndex = startIndex;
+    private void mergeSortedArray(int[] rawArray, int leftIndex, int mid, int rightIndex, int[] tempArray) {
+         System.arraycopy(rawArray, leftIndex, tempArray, leftIndex, rightIndex - leftIndex + 1);
+
+        int frontIndex = leftIndex;
         int behindIndex = mid + 1;
 
-        int curIndex = startIndex;
-        int tempCur = 0;
-        while (frontIndex <= mid - 1 || behindIndex <= endIndex) {
-            if (frontIndex == mid+1) {
-                tempCur = tempArray[behindIndex++];
-            } else if (behindIndex == endIndex + 1) {
-                tempCur = tempArray[frontIndex++];
-            } else if (tempArray[behindIndex] >= tempArray[frontIndex]) {
-                tempCur = tempArray[frontIndex++];
-            }else{
-                tempCur = tempArray[behindIndex++];
+        int curIndex = 0;
+        int curTemp;
+
+        while (frontIndex <= mid || behindIndex <= rightIndex) {
+            if (frontIndex == mid + 1) {
+                curTemp = tempArray[behindIndex++];
+            } else if (behindIndex == rightIndex + 1) {
+                curTemp = tempArray[frontIndex++];
+            } else if (tempArray[frontIndex] >= tempArray[behindIndex]) {
+                curTemp = tempArray[behindIndex++];
+            }else {
+                curTemp = tempArray[frontIndex++];
             }
-            rawArray[curIndex++] = tempCur;
+            rawArray[curIndex++] = curTemp;
         }
     }
 
-    private void insertSort(int[] rawArray, int startIndex, int endIndex) {
-        for (int outer = startIndex + 1; outer <= endIndex; outer++) {
-
-            int temp = rawArray[outer];
+    private void insertionSort(int[] rawArray, int leftIndex, int rightIndex) {
+        for (int outer = leftIndex; outer <= rightIndex; outer++) {
             int inner = outer;
-            while (inner > startIndex && temp < rawArray[inner - 1]) {
+            int temp = rawArray[outer];
+            while (inner > leftIndex  && rawArray[inner - 1] > temp) {
                 rawArray[inner] = rawArray[inner - 1];
                 inner--;
             }
-            if (inner != outer) {
-                rawArray[inner] = temp;
-            }
+            rawArray[inner] = temp;
         }
     }
 
+
     public static void main(String[] args) {
-        final int[] ints = {9,3,8,5,4,7,1,2,6};
+        final int[] ints = {9,3,8,13,5,4,10,7,1,2,22,6};
         final MergeSort mergeSort = new MergeSort();
         mergeSort.sort(ints);
         System.out.println(Arrays.toString(ints));

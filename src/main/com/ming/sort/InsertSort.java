@@ -11,7 +11,7 @@ import java.util.Arrays;
 public class InsertSort implements Sort{
 
     @Override
-    public int[] sort(int[] rawArray) {
+    public void sort(int[] rawArray) {
         for (int outer = 0; outer < rawArray.length; outer++) {
             int temp = rawArray[outer];
             int inner = outer;
@@ -22,7 +22,6 @@ public class InsertSort implements Sort{
             rawArray[inner] = temp;
 
         }
-        return rawArray;
     }
 
     /**
@@ -57,8 +56,8 @@ public class InsertSort implements Sort{
         final int[] ints = {0,3,5,4,0,3,4,2,2,6,8,8,1,6,2,7,0,5,6,6};
         System.out.println(Arrays.toString(ints));
         final InsertSort insertSort = new InsertSort();
-        final int[] sort = insertSort.sort(ints);
-        System.out.println(Arrays.toString(sort));
+        insertSort.sort(ints);
+        System.out.println(Arrays.toString(ints));
 
         final MySingleLinkedList mySingleLinkedList = new MySingleLinkedList(5);
         mySingleLinkedList.next = new MySingleLinkedList(3);
