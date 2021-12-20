@@ -1,6 +1,6 @@
 package main.com.ming.test;
 
-import main.com.ming.MyLinkedList;
+import main.com.ming.linked.MyLinkedList;
 
 /**
  * @author 78c8-6603

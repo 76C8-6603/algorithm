@@ -1,4 +1,4 @@
-package main.com.ming;
+package main.com.ming.linked;
 
 import java.util.List;
 

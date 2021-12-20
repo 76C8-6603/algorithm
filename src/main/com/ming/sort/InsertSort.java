@@ -1,7 +1,6 @@
 package main.com.ming.sort;
 
-import main.com.ming.MyLinkedList;
-import main.com.ming.MySingleLinkedList;
+import main.com.ming.linked.MySingleLinkedList;
 
 import java.util.Arrays;
 
